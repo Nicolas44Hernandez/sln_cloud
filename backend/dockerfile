@@ -1,0 +1,24 @@
+# Use the official Python image as a base image
+FROM python:3.9
+
+# set working directory
+WORKDIR /app
+
+# add requirements
+COPY ./requirements.txt /app
+
+# install requirements
+RUN pip install -r requirements.txt
+
+# add app
+COPY . .
+
+# Expose port 5000
+EXPOSE 5000
+
+# Set environment variables
+ENV FLASK_APP=server/app:create_app()
+ENV FLASK_ENV=production
+
+# Define the command to run the Flask application
+CMD ["flask", "run", "--host=0.0.0.0"]

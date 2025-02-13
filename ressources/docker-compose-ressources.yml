@@ -1,0 +1,54 @@
+version: "3.7"
+
+services: 
+  mongodb:
+    #image: mongodb-raspberrypi4-unofficial-r7.0.4
+    image: mongo:6-jammy # USED TO TEST
+    container_name: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=tal      
+      - MONGO_INITDB_ROOT_PASSWORD=tal
+      - MONGO_INITDB_DATABASE=clients
+    networks: 
+      - sln-network
+    # expose:
+    #   - '27017'
+    ports: # USED TO TEST
+      - "27017:27017"
+    volumes:
+      - type: volume
+        source: MONGO_DATA
+        target: /data/db
+      - type: volume
+        source: MONGO_CONFIG
+        target: /data/configdb
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+  
+  mongo-express:
+    container_name: mongo-express
+    restart: always
+    image: mongo-express
+    depends_on:
+      - mongodb
+    networks: 
+      - sln-network
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=tal
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=tal
+      - ME_CONFIG_BASICAUTH_USERNAME=tal
+      - ME_CONFIG_BASICAUTH_PASSWORD=tal
+    ports:
+      - '8081:8081'
+
+volumes:
+  MONGO_DATA:
+    name: MONGO_DATA
+  MONGO_CONFIG:
+    name: MONGO_CONFIG
+
+networks:
+  sln-network:
+    name: sln
+    driver: bridge
