@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  sln-backend:
+    build: ../backend/
+    restart: always
+    image: sln-backend:latest
+    container_name: sln-backend
+    ports:
+      - "5000:5000"
+    networks: 
+      - sln 
+
+  sln-web-server:
+    build: ../web_app/
+    restart: always
+    image: sln-web-server:latest
+    depends_on:
+      - sln-backend
+    networks: 
+      - sln
+    links:
+      - sln-backend
+    ports:
+      - "8080:80"
+
+networks:
+  sln:
+    external: true
