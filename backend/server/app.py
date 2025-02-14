@@ -6,9 +6,12 @@ from os import path
 import yaml
 from flask import Flask
 from flask_cors import CORS
-from .managers.band_status_manager import band_status_manager_service
+from .managers.mongo_db_manager import mongo_db_manager_service
 
 from .rest_api.band_status import bp as band_status_manager_controler_bp
+from .rest_api.traffic import bp as box_traffic_manager_controler_bp
+from .rest_api.counters import bp as box_counters_manager_controler_bp
+from .rest_api.inference_results import bp as inference_results_manager_controler_bp
 from .extension import api
 from .common import ServerException, handle_server_exception
 
@@ -75,8 +78,8 @@ def register_extensions(app: Flask):
         },
     )
 
-    # Clients manager service
-    band_status_manager_service.init_app(app=app)
+    # Mongo db manager service
+    mongo_db_manager_service.init_app(app=app)
     
 
 def register_blueprints(app: Flask):
@@ -85,3 +88,6 @@ def register_blueprints(app: Flask):
     app.register_error_handler(ServerException, handle_server_exception)
     # Register REST blueprints
     api.register_blueprint(band_status_manager_controler_bp)
+    api.register_blueprint(box_traffic_manager_controler_bp)
+    api.register_blueprint(box_counters_manager_controler_bp)  
+    api.register_blueprint(inference_results_manager_controler_bp)  

@@ -9,6 +9,7 @@ class ErrorCode(Enum):
     # Please enrich this enumeration in order to handle other kind of errors
     UNEXPECTED_ERROR = (0, 500, "Unexpected error occurs")
     MONGO_ERROR = (1, 500, "Error in Mongo db connection")
+    ARGS_ERROR = (2, 400, "Wrong args")
 
     # pylint: disable=unused-argument
     def __new__(cls, *args, **kwds):
