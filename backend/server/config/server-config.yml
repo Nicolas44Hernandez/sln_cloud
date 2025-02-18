@@ -14,3 +14,8 @@ MONGO_STR_DEV: mongodb://tal:tal@0.0.0.0:27017 # Docker in local
 MONGO_STR: mongodb://tal:tal@mongodb:27017 # Docker container in docker compose
 MONGO_DB_NAME: database
 MONGO_BAND_STATUS_COLLECTION_NAME: band_status
+MONGO_BOX_TRAFFIC_COLLECTION_NAME: box_traffic
+MONGO_STATIONS_TRAFFIC_COLLECTION_NAME: stations_traffic
+MONGO_BOX_COUNTERS_COLLECTION_NAME: box_counters
+MONGO_STATIONS_COUNTERS_COLLECTION_NAME: stations_counters
+MONGO_INFERENCE_RESULTS_COLLECTION_NAME: inference_results
