@@ -5,13 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Create DB",
+            "name": "Create DB (DEVELOPMENT)",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/backend/db_manage.py",
             "console": "integratedTerminal",
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
+                "DB_ENV": "DEVELOPMENT",
+            },
+            "args": [
+                "create"
+            ]
+        },        
+        {
+            "name": "Create DB (PRODUCTION)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/db_manage.py",
+            "console": "integratedTerminal",
+            "env": {
+                "FLASK_ENV": "DEVELOPMENT",
+                "DB_ENV": "PRODUCTION",
             },
             "args": [
                 "create"
@@ -25,6 +40,7 @@
             "console": "integratedTerminal",
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
+                "DB_ENV": "DEVELOPMENT",
             },
             "args": [
                 "delete"

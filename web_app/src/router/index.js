@@ -17,20 +17,10 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/sln/traffic',
-      name: 'traffic',
+      path: '/sln/home',
+      name: 'home',
       component: () => import('../views/TrafficView.vue')
     },
-    {
-      path: '/sln/noise',
-      name: 'login',
-      component: () => import('../views/NoiseView.vue')
-    }
-    // {
-    //   path: '/sln/air-stats',
-    //   name: 'login',
-    //   component: () => import('../views/AirStatsView.vue')
-    // }
   ]
 })
 
