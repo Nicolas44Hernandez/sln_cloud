@@ -17,6 +17,7 @@ export default {
   },
   mounted() {
     this.running = false; 
+    this.$router.push({name: "home"})  
   },
   components: {
     Header

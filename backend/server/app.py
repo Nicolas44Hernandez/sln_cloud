@@ -11,7 +11,8 @@ from .managers.mongo_db_manager import mongo_db_manager_service
 from .rest_api.band_status import bp as band_status_manager_controler_bp
 from .rest_api.traffic import bp as box_traffic_manager_controler_bp
 from .rest_api.counters import bp as box_counters_manager_controler_bp
-from .rest_api.inference_results import bp as inference_results_manager_controler_bp
+from .rest_api.inference import bp as inference_manager_controler_bp
+from .rest_api.timestamps import bp as timestamps_manager_controler_bp
 from .extension import api
 from .common import ServerException, handle_server_exception
 
@@ -90,4 +91,5 @@ def register_blueprints(app: Flask):
     api.register_blueprint(band_status_manager_controler_bp)
     api.register_blueprint(box_traffic_manager_controler_bp)
     api.register_blueprint(box_counters_manager_controler_bp)  
-    api.register_blueprint(inference_results_manager_controler_bp)  
+    api.register_blueprint(inference_manager_controler_bp)  
+    api.register_blueprint(timestamps_manager_controler_bp)     
