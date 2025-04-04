@@ -1,6 +1,8 @@
 # SLN Web server
 Smart Local Networks web server 
 
+# RELEASE: Model MLP 12_3
+
 # OS installation
 
 You can use the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) to flash the last 64-bit Bullseye ligth version (no desktop)
