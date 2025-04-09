@@ -48,16 +48,14 @@ export default {
     },
     methods: {
         updateChart() {
-            console.log(`Updating inferences probailities chart`);
+            console.log(`Updating inferences probabilities chart`);
             const ctx = chartRef.value.getContext('2d');
-
 
             // Extract timestamps 
             const formatedTimestamps = this.timestamps.map(date => date.substring(11, 22));
-            
-            
+
             // Create inferences dict
-            const stations_inferences_probabilities_dict = this.createInferencesDict();       
+            const stations_inferences_probabilities_dict = this.createInferencesDict(); 
 
             // Update datasets
             const datasets = this.updateDatasets(stations_inferences_probabilities_dict);
@@ -68,7 +66,6 @@ export default {
                 chartInstance.data.datasets = datasets; // Update datasets
 
                 chartInstance.update('none'); // Refresh the chart
-                // chartInstance.destroy();
             } else {
                 // Create the chart instance if it doesn't exist
                 chartInstance = new Chart(ctx, {
@@ -99,6 +96,8 @@ export default {
                                     display: true,
                                     text: 'Inferences Probabilities'
                                 },
+                                min: 0, // Set minimum value for y-axis
+                                max: 1, // Set maximum value for y-axis
                                 ticks: {
                                     autoSkip: false,
                                     maxTicksLimit: 5,                                    
