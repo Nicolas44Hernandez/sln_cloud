@@ -42,3 +42,9 @@ __pycache__/
 
 # Logs
 logs/
+
+# Import database
+database_import_folder/
+database_import_folder/*.json
+database_backups/
+database_backups/*

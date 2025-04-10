@@ -47,6 +47,34 @@
             ]
         },
         {
+            "name": "Export DB",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/db_backup.py",
+            "console": "integratedTerminal",
+            "env": {
+                "FLASK_ENV": "DEVELOPMENT",
+            },
+            "args": [
+                "export",
+                "database_import_folder",
+            ]
+        },
+        {
+            "name": "Import DB",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/backend/db_backup.py",
+            "console": "integratedTerminal",
+            "env": {
+                "FLASK_ENV": "DEVELOPMENT",
+            },
+            "args": [
+                "import",
+                "database_import_folder",
+            ]
+        },
+        {
             "name": "Run backend in dev",
             "type": "debugpy",
             "request": "launch",
