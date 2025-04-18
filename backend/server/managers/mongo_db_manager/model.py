@@ -235,7 +235,6 @@ class InferenceInput:
     box_rx_pps: float
     box_tx_pps: float
     # STATION
-    signalStrength: int 
     downlinkMCS: float
     uplinkMCS: float
     uplinkShortGuard: float
@@ -254,7 +253,6 @@ class InferenceInput:
         box_rx_Mbps: float,
         box_rx_pps: float,
         box_tx_pps: float,
-        signalStrength: int ,
         downlinkMCS: float,
         uplinkMCS: float,
         uplinkShortGuard: float,
@@ -271,7 +269,6 @@ class InferenceInput:
         self.box_rx_Mbps = box_rx_Mbps
         self.box_rx_pps = box_rx_pps
         self.box_tx_pps = box_tx_pps
-        self.signalStrength = signalStrength
         self.downlinkMCS = downlinkMCS
         self.uplinkMCS = uplinkMCS
         self.uplinkShortGuard = uplinkShortGuard
@@ -291,7 +288,6 @@ class InferenceInput:
             "box_rx_Mbps" : self.box_rx_Mbps,
             "box_rx_pps" : self.box_rx_pps,
             "box_tx_pps" : self.box_tx_pps,
-            "signalStrength" : self.signalStrength,
             "downlinkMCS" : self.downlinkMCS,
             "uplinkMCS" : self.uplinkMCS,
             "uplinkShortGuard" : self.uplinkShortGuard,
