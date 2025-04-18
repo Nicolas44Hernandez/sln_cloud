@@ -62,12 +62,15 @@ class MongoDbManager:
         # Check if the database exists
         try:
             dblist = self.mongodb_client.list_database_names()
-            if self.db_name not in dblist:            
-                raise ServerException(ErrorCode.MONGO_ERROR)                 
+            new_db_cols = []
+            if self.db_name not in dblist:     
+                new_db = self.create_database()
+                new_db_cols = list(new_db.keys())
 
             # Check if the collection exists
             mydb = self.mongodb_client[self.db_name]
             collist = mydb.list_collection_names()
+            db_collumns = collist if len(collist) > 0 else new_db_cols
             expected_cols = [
                 self.band_status_collection_name, 
                 self.box_traffic_collection_name,
@@ -76,7 +79,7 @@ class MongoDbManager:
                 self.stations_counters_collection_name,
                 self.inferences_collection_name,
             ]
-            if not all(item in collist for item in expected_cols):
+            if not all(item in db_collumns for item in expected_cols):
                 raise ServerException(ErrorCode.MONGO_ERROR)
             
             self.band_status_collection = self.mongodb_client[self.db_name][self.band_status_collection_name]
