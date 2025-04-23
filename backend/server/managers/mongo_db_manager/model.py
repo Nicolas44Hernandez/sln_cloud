@@ -335,3 +335,23 @@ class Inferences:
             "result": self.result.to_dict(),
             "timestamp": self.timestamp
         }
+
+
+@dataclass
+class StationRtd:
+    station: str
+    rtd: float    
+    timestamp: datetime
+
+    def __init__(self, station: bool, rtd: float, timestamp: datetime):
+        self.station = station
+        self.rtd = rtd
+        self.timestamp = timestamp
+
+    def to_dict(self):
+        """Convert the dataclass instance to a dictionary."""
+        return {
+            "station": self.station,
+            "rtd": self.rtd,
+            "timestamp": self.timestamp
+        }

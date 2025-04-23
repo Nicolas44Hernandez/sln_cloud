@@ -200,6 +200,25 @@ else:
         for n, (input, result) in enumerate(zip(INFERENCE_INPUT_SAMPLES, INFERENCE_RESULTS_SAMPLES))
     ]
 
+if DEVELOPMENT:
+    STATIONS_RTD_SAMPLES = [
+        {
+            "timestamp": TIMESTAMPS[n],
+            "station": "6E:F0:60:14:53:B9" if random() < 0.5 else "66:55:44:33:22:11",
+            "rtd": random()*10,
+        }
+        for n in range(NB_OF_SAMPLES)
+    ]
+else:
+    STATIONS_RTD_SAMPLES = [
+        {
+            "timestamp": TIMESTAMPS[n],
+            "station": "6E:F0:60:14:53:B9",
+            "rtd": 0,
+        }
+        for n in range(NB_OF_SAMPLES)
+    ]
+
 
 @cli.command('create')
 def create_db():
@@ -214,8 +233,9 @@ def create_db():
     box_counters_samples_nb = nb_samples[mongo_db_manager_service.box_counters_collection_name]
     stations_counters_samples_nb = nb_samples[mongo_db_manager_service.stations_counters_collection_name]
     inferences_samples_nb = nb_samples[mongo_db_manager_service.inferences_collection_name]
+    stations_rtd_samples_nb = nb_samples[mongo_db_manager_service.stations_rtd_collection_name]
 
-    if band_status_samples_nb != 0 or box_traffic_samples_nb  != 0 or stations_traffic_samples_nb  != 0 or box_counters_samples_nb  != 0 or stations_counters_samples_nb  != 0 or inferences_samples_nb  != 0:
+    if band_status_samples_nb != 0 or box_traffic_samples_nb  != 0 or stations_traffic_samples_nb  != 0 or box_counters_samples_nb  != 0 or stations_counters_samples_nb  != 0 or inferences_samples_nb  != 0 or stations_rtd_samples_nb != 0:
         print("Database exists, run delete command before re create it")
         return   
      
@@ -239,6 +259,9 @@ def create_db():
 
     # Insert inference samples to DB
     mongo_db_manager_service.insert_inferences_samples(INFERENCES_SAMPLES)
+
+    # Insert stations rtd samples to DB
+    mongo_db_manager_service.insert_stations_rtd_samples(STATIONS_RTD_SAMPLES)
     
     print("Database successfully created!")
 

@@ -3,7 +3,7 @@ import logging
 import pymongo
 from flask import Flask
 from server.common import ServerException, ErrorCode
-from .model import BandStatus, BoxTraffic, StationsTraffic, BoxCounters, StationsCounters, InferenceResults, InferenceInput, Inferences
+from .model import BandStatus, BoxTraffic, StationsTraffic, BoxCounters, StationsCounters, InferenceResults, InferenceInput, Inferences, StationRtd
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,8 @@ class MongoDbManager:
     stations_counters_collection: str
     inferences_collection_name: str
     inferences_collection: str
+    stations_rtd_collection_name: str
+    stations_rtd_collection: str
     connected: bool
 
     def __init__(self, app: Flask = None) -> None:
@@ -47,6 +49,7 @@ class MongoDbManager:
             self.box_counters_collection_name=app.config["MONGO_BOX_COUNTERS_COLLECTION_NAME"]
             self.stations_counters_collection_name=app.config["MONGO_STATIONS_COUNTERS_COLLECTION_NAME"]
             self.inferences_collection_name=app.config["MONGO_INFERENCES_COLLECTION_NAME"]
+            self.stations_rtd_collection_name=app.config["MONGO_STATIONS_RTD_COLLECTION_NAME"]
             self.connected=False
 
             self.connect_to_mongo_db()
@@ -78,6 +81,7 @@ class MongoDbManager:
                 self.box_counters_collection_name,
                 self.stations_counters_collection_name,
                 self.inferences_collection_name,
+                self.stations_rtd_collection_name,
             ]
             if not all(item in db_collumns for item in expected_cols):
                 raise ServerException(ErrorCode.MONGO_ERROR)
@@ -88,6 +92,7 @@ class MongoDbManager:
             self.box_counters_collection = self.mongodb_client[self.db_name][self.box_counters_collection_name]
             self.stations_counters_collection = self.mongodb_client[self.db_name][self.stations_counters_collection_name]
             self.inferences_collection = self.mongodb_client[self.db_name][self.inferences_collection_name]
+            self.stations_rtd_collection = self.mongodb_client[self.db_name][self.stations_rtd_collection_name]
             self.connected=True
             logger.info("Succefully connected")
         except:
@@ -129,9 +134,10 @@ class MongoDbManager:
             box_counters_samples = self.get_box_counters_list()
             stations_counters_samples = self.get_stations_counters_list()
             inferences_samples = self.get_inferences_list()
+            stations_rtd_samples = self.get_stations_rtd_list()
 
             # Set a single samples list
-            samples = band_status_samples + box_traffic_samples + stations_traffic_samples + box_counters_samples +  stations_counters_samples + inferences_samples
+            samples = band_status_samples + box_traffic_samples + stations_traffic_samples + box_counters_samples +  stations_counters_samples + inferences_samples + stations_rtd_samples
             # Extract the timestamps
             timestamps = []
             for sample in samples:
@@ -346,7 +352,51 @@ class MongoDbManager:
         except:
             self.connected=False
             raise ServerException(ErrorCode.MONGO_ERROR)
-        
+
+    def get_stations_rtd_list(self):
+        """Retreive stations rtd list from mongo"""
+        if not self.connected:
+            self.reconnect_to_mongodb()
+        # Find all samples
+        try:
+            stations_rtd_db = self.stations_rtd_collection.find()
+            samples = []
+            for stations_rtd_sample in stations_rtd_db:
+                samples.append(stations_rtd_sample)
+            return samples
+        except:
+            self.connected=False
+            raise ServerException(ErrorCode.MONGO_ERROR)
+
+    def create_stations_rtd_obj(self, stations_rtd: dict):
+        """Create stations_rtd entry in collection"""
+        try:
+            sample = StationRtd(**stations_rtd)
+            sample_dict = sample.to_dict()
+        except:
+            raise ServerException(ErrorCode.ARGS_ERROR)
+        try:
+            self.stations_rtd_collection.insert_one(sample_dict)
+        except:
+            self.connected=False
+            raise ServerException(ErrorCode.MONGO_ERROR)
+        return sample
+
+    def get_rtd_list_for_station(self, station: str):
+        """Get rtd list for a specific station from mongo"""
+        if not self.connected:
+            self.reconnect_to_mongodb()
+        # Find all samples
+        try:
+            query = {"station": station} 
+            filtered_samples = self.stations_rtd_collection.find(query)
+            samples = list(filtered_samples)
+            return samples
+        except:
+            self.connected=False
+            raise ServerException(ErrorCode.MONGO_ERROR)
+
+     
     def create_inference_obj(self, inference: dict):
         """Create infernece entry in collection"""
         try:
@@ -411,6 +461,12 @@ class MongoDbManager:
             logger.info(f"Creatting collection {self.inferences_collection_name}")
             self.inferences_collection = self.mongodb_client[self.db_name][self.inferences_collection_name]
 
+        # Stations rtd collection
+        if self.stations_rtd_collection_name not in collist:
+            logger.info(f"Creatting collection {self.stations_rtd_collection_name}")
+            self.stations_rtd_collection = self.mongodb_client[self.db_name][self.stations_rtd_collection_name]
+
+
         # Return the number of samples in the colections
         collections_elements= {
             self.band_status_collection_name: self.band_status_collection.count_documents({}),
@@ -419,6 +475,7 @@ class MongoDbManager:
             self.box_counters_collection_name: self.box_counters_collection.count_documents({}),
             self.stations_counters_collection_name: self.stations_counters_collection.count_documents({}),
             self.inferences_collection_name: self.inferences_collection.count_documents({}),
+            self.stations_rtd_collection_name: self.stations_rtd_collection.count_documents({}),
         }
         return collections_elements
 
@@ -446,6 +503,10 @@ class MongoDbManager:
         """Create multiple inference samples in database"""
         self.inferences_collection.insert_many(samples)
 
+    def insert_stations_rtd_samples(self, samples):
+        """Create multiple stations_rtd samples in database"""
+        self.stations_rtd_collection.insert_many(samples)
+    
     def delete_database(self):
         """Drop collection and database"""
         self.band_status_collection.drop()
@@ -454,6 +515,7 @@ class MongoDbManager:
         self.box_counters_collection.drop()
         self.stations_counters_collection.drop()
         self.inferences_collection.drop()
+        self.stations_rtd_collection.drop()
 
 mongo_db_manager_service: MongoDbManager = MongoDbManager()
 """ Mongo DB manager service singleton"""
