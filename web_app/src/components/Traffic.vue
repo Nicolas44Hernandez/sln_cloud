@@ -6,6 +6,8 @@ import StationsCountersChart from './StationsCountersChart.vue'
 import InferenceProbabilitiesChart from './InferenceProbabilitiesChart.vue'
 import InferenceResultsChart from './InferenceResultsChart.vue'
 import BandStatusChart from './BandStatusChart.vue'
+import StationsRtdChart from './StationsRtdChart.vue'
+
 </script>
 <template>  
 <div class="charts-container">
@@ -23,6 +25,9 @@ import BandStatusChart from './BandStatusChart.vue'
   </div>
   <div class="inferences-results-container">
     <InferenceResultsChart :inferences="inferences" :stations_colors="stations_colors" :timestamps="timestamps" />
+  </div>
+  <div class="rtd-container">
+    <StationsRtdChart :stations_rtd="stations_rtd" :stations_colors="stations_colors" :timestamps="timestamps" />
   </div>
   <div class="band-status-container">
     <BandStatusChart :band_status="band_status" :timestamps="timestamps" />
@@ -43,6 +48,7 @@ export default {
       band_status: [],
       connected_stations: [],
       stations_traffic: {},
+      stations_rtd: {},
       box_counters_2GHz: [],
       box_counters_5GHz: [],
       stations_counters: {},
@@ -66,6 +72,7 @@ export default {
       this.getStationsTraffic();
       this.getBoxCounters();
       this.geStationsCounters();
+      this.getStationsRtd();
       
       this.getTimestamps();
     },
@@ -304,6 +311,50 @@ export default {
             else {
               console.log(`Inferences samples received for station ${station}`);
               this.inferences = new_inferences_dict;
+              break;
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);  
+        });
+    },
+    getStationsRtd() {
+      // Geting stations traffic list of points from backend
+      const url ='http://localhost:3000/api-sln/rtd'
+      //const url ='/api-eip/traffic/rtd'
+      axios.get(url)
+        .then(response => {
+          let new_stations_rtd_dict = {};
+        
+          console.log("When retreiving stations RTD");
+
+          response.data.forEach((sample) => {
+            const newSample = {
+                "timestamp": sample.timestamp,
+                "rtd": sample.rtd,
+              }
+            if (sample.station in new_stations_rtd_dict) {              
+              new_stations_rtd_dict[sample.station].push(newSample);
+            } else {
+              new_stations_rtd_dict[sample.station] = [newSample];
+            }                
+          });
+          
+          // Get stations list
+          const stations_list = Object.keys(new_stations_rtd_dict)
+          const stations_in_new_data = [...new Set(stations_list)];
+          
+          // update stations rtd arrays    
+          for (const station of stations_in_new_data) {            
+            if(station in this.stations_rtd) {           
+              if(!this.arraysAreSimilar(new_stations_rtd_dict[station], this.stations_rtd[station])){
+                this.stations_rtd = new_stations_rtd_dict;
+                break;
+              }  
+            }
+            else {
+              this.stations_rtd = new_stations_rtd_dict;
               break;
             }
           }

@@ -2,17 +2,19 @@
 
 import logging
 from logging.config import dictConfig
-from os import path
+from os import path, getenv
 import yaml
 from flask import Flask
 from flask_cors import CORS
 from .managers.mongo_db_manager import mongo_db_manager_service
+from .managers.rtd_manager import rtd_manager_service
 
 from .rest_api.band_status import bp as band_status_manager_controler_bp
 from .rest_api.traffic import bp as box_traffic_manager_controler_bp
 from .rest_api.counters import bp as box_counters_manager_controler_bp
 from .rest_api.inference import bp as inference_manager_controler_bp
 from .rest_api.timestamps import bp as timestamps_manager_controler_bp
+from .rest_api.rtd import bp as rtd_manager_controler_bp
 from .extension import api
 from .common import ServerException, handle_server_exception
 
@@ -81,6 +83,10 @@ def register_extensions(app: Flask):
 
     # Mongo db manager service
     mongo_db_manager_service.init_app(app=app)
+
+    # RTD manager service
+    if getenv("APP_MODE") == "RUN":
+        rtd_manager_service.init_app(app=app)
     
 
 def register_blueprints(app: Flask):
@@ -92,4 +98,5 @@ def register_blueprints(app: Flask):
     api.register_blueprint(box_traffic_manager_controler_bp)
     api.register_blueprint(box_counters_manager_controler_bp)  
     api.register_blueprint(inference_manager_controler_bp)  
-    api.register_blueprint(timestamps_manager_controler_bp)     
+    api.register_blueprint(timestamps_manager_controler_bp)
+    api.register_blueprint(rtd_manager_controler_bp)

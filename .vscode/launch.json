@@ -13,6 +13,7 @@
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
                 "DB_ENV": "DEVELOPMENT",
+                "APP_MODE": "SETUP",
             },
             "args": [
                 "create"
@@ -27,6 +28,7 @@
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
                 "DB_ENV": "PRODUCTION",
+                "APP_MODE": "SETUP",
             },
             "args": [
                 "create"
@@ -41,6 +43,7 @@
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
                 "DB_ENV": "DEVELOPMENT",
+                "APP_MODE": "SETUP",
             },
             "args": [
                 "delete"
@@ -54,10 +57,11 @@
             "console": "integratedTerminal",
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
+                "APP_MODE": "SETUP",
             },
             "args": [
                 "export",
-                "database_import_folder",
+                "database-Notraffic-SignalStrength-5GHz-Galaxy",
             ]
         },
         {
@@ -68,10 +72,11 @@
             "console": "integratedTerminal",
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
+                "APP_MODE": "SETUP",
             },
             "args": [
                 "import",
-                "database_import_folder",
+                "database-Notraffic-SignalStrength-5GHz-Galaxy",
             ]
         },
         {
@@ -82,6 +87,7 @@
             "env": {
                 "FLASK_APP": "backend/server/app:create_app()",
                 "FLASK_ENV": "DEVELOPMENT",
+                "APP_MODE": "RUN",
             },
             "args": [
                 "run",

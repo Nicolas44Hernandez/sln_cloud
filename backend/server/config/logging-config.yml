@@ -46,7 +46,12 @@ loggers:
       handlers: [console]
       propagate: no
 
-  server.managers.mongo:
+  server.managers.mongo_db_manager:
+    level: INFO
+    handlers: [console]
+    propagate: no
+  
+  server.managers.rtd_manager:
     level: INFO
     handlers: [console]
     propagate: no
