@@ -97,6 +97,25 @@
                 "3000",
                 "--no-reload",
             ]
+        },
+        {
+            "name": "Run backend in dev: VISUALIZE",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "backend/server/app:create_app()",
+                "FLASK_ENV": "DEVELOPMENT",
+                "APP_MODE": "VISUALIZE",
+            },
+            "args": [
+                "run",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "3000",
+                "--no-reload",
+            ]
         }
     ]
 }

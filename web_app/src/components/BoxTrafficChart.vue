@@ -191,9 +191,9 @@ export default {
         createDatasets(traffic2GHz, traffic5GHz, totalTraffic, stationsTraffic) {
             // Create box traffic datasets
             const datasets = [
-                this.createDataset('2.4GHz', traffic2GHz, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)'),
-                this.createDataset('5GHz', traffic5GHz, 'rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 0.2)'),
-                this.createDataset('Total', totalTraffic, 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)'),
+                this.createDataset('2.4GHz', traffic2GHz, 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)', false),
+                this.createDataset('5GHz', traffic5GHz, 'rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 0.2)', true),
+                this.createDataset('Total', totalTraffic, 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)', true),
             ];
 
             // Create stations traffic dataset
@@ -204,7 +204,7 @@ export default {
 
             return datasets;
         },
-        createDataset(label, data, borderColor, backgroundColor) {
+        createDataset(label, data, borderColor, backgroundColor, hidden) {
             return {
                 label,
                 data,
@@ -212,6 +212,7 @@ export default {
                 backgroundColor,
                 spanGaps: true,
                 fill: false,
+                hidden: hidden,
             };
         },
     }

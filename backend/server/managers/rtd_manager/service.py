@@ -29,8 +29,9 @@ class RtdManager:
 
             self.run_service_in_dedicated_thread()
 
-    def ping_station(self, station_ip: str, station_mac: str, timestamp: datetime, nb_pings: int):
+    def ping_station(self, station_ip: str, station_mac: str, timestamp: datetime, nb_pings: int=10):
         """Ping a single station and log the response time in milliseconds"""
+        start = datetime.now()
         results = []
         for i in range(nb_pings):
             rtd_ms = ping3.ping(station_ip, timeout=1, unit="ms")
@@ -39,9 +40,12 @@ class RtdManager:
             else:
                 logger.warning(f"Ping to {station_ip} failed")
                 return 
+        delta = datetime.now() - start
+        logger.debug(f"{nb_pings} pings executed in {delta}")
         
         if len(results) > 1:
-            station_rtd = sum(results[1:]) / (len(results) - 1)
+            sorted_results = sorted(results)
+            station_rtd = sum(sorted_results[:4]) / len(sorted_results[:4])
 
             logger.debug(f"RTD to {station_ip}: {station_rtd:.2f} ms")
             rtd_obj = {
@@ -66,11 +70,10 @@ class RtdManager:
         """Run RTD service"""
         while True:            
             threads = []
-            logger.info("PINGING")
             start = datetime.now()
             for station in self.stations:
                 # Create a new thread for each ping
-                thread = threading.Thread(target=self.ping_station, args=(station["ip"],station["mac"],start,6,))
+                thread = threading.Thread(target=self.ping_station, args=(station["ip"],station["mac"],start,10,))
                 threads.append(thread)
                 thread.start()    
 

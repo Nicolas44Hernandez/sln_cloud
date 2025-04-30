@@ -24,9 +24,11 @@ MONGO_STATIONS_RTD_COLLECTION_NAME: stations_rtd
 
 # RTD CONFIG
 RTD_STATIONS: 
-  - mac: E4:5F:01:E8:C1:2E
-    ip: 192.168.102.97  
-  - mac: 6C:C7:EC:2B:2E:D7
+  - mac: 78:AF:08:31:B1:18 #PC
+    ip: 192.168.102.98  
+  - mac: 6C:C7:EC:2B:2E:D7 #GALAXY
     ip: 192.168.102.99
+  - mac: E4:5F:01:E8:C1:2E # RPI
+    ip: 192.168.102.97    
     
 RTD_PERIOD_IN_SECS: 5
