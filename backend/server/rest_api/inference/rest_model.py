@@ -16,8 +16,6 @@ class InferenceInputSchema(Schema):
     box_tx_pps = Float(required=True)
     # STATION
     downlinkMCS = Float(required=True)
-    uplinkMCS = Float(required=True)
-    uplinkShortGuard = Float(required=True)
     tx_Mbps = Float(required=True)
     rx_Mbps = Float(required=True)
     rx_pps = Float(required=True)
