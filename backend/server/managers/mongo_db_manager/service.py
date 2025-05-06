@@ -41,8 +41,12 @@ class MongoDbManager:
             if os.getenv("FLASK_ENV") != "DEVELOPMENT":
                 self.mongodb_str=app.config["MONGO_STR"]
             else:                
-                self.mongodb_str=app.config["MONGO_STR_DEV"]       
-            self.db_name=app.config["MONGO_DB_NAME"]
+                self.mongodb_str=app.config["MONGO_STR_DEV"]   
+
+            if "TEST_NAME" in os.environ: 
+                self.db_name=os.getenv("TEST_NAME")
+            else:
+                self.db_name=app.config["MONGO_DB_NAME"]
             self.band_status_collection_name=app.config["MONGO_BAND_STATUS_COLLECTION_NAME"]
             self.box_traffic_collection_name=app.config["MONGO_BOX_TRAFFIC_COLLECTION_NAME"]
             self.stations_traffic_collection_name=app.config["MONGO_STATIONS_TRAFFIC_COLLECTION_NAME"]

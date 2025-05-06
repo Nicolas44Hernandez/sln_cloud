@@ -236,8 +236,6 @@ class InferenceInput:
     box_tx_pps: float
     # STATION
     downlinkMCS: float
-    uplinkMCS: float
-    uplinkShortGuard: float
     tx_Mbps: float
     rx_Mbps: float   
     rx_pps: float
@@ -254,8 +252,6 @@ class InferenceInput:
         box_rx_pps: float,
         box_tx_pps: float,
         downlinkMCS: float,
-        uplinkMCS: float,
-        uplinkShortGuard: float,
         tx_Mbps: float,
         rx_Mbps: float   ,
         rx_pps: float,
@@ -270,8 +266,6 @@ class InferenceInput:
         self.box_rx_pps = box_rx_pps
         self.box_tx_pps = box_tx_pps
         self.downlinkMCS = downlinkMCS
-        self.uplinkMCS = uplinkMCS
-        self.uplinkShortGuard = uplinkShortGuard
         self.tx_Mbps = tx_Mbps
         self.rx_Mbps = rx_Mbps
         self.rx_pps = rx_pps
@@ -289,8 +283,6 @@ class InferenceInput:
             "box_rx_pps" : self.box_rx_pps,
             "box_tx_pps" : self.box_tx_pps,
             "downlinkMCS" : self.downlinkMCS,
-            "uplinkMCS" : self.uplinkMCS,
-            "uplinkShortGuard" : self.uplinkShortGuard,
             "tx_Mbps" : self.tx_Mbps,
             "rx_Mbps" : self.rx_Mbps,
             "rx_pps" : self.rx_pps,

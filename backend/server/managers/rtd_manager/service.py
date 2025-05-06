@@ -31,6 +31,7 @@ class RtdManager:
 
     def ping_station(self, station_ip: str, station_mac: str, timestamp: datetime, nb_pings: int=10):
         """Ping a single station and log the response time in milliseconds"""
+        logger.debug(f"Pinging station {station_ip}")
         start = datetime.now()
         results = []
         for i in range(nb_pings):

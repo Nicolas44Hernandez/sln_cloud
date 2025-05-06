@@ -12,7 +12,6 @@ OPENAPI_SWAGGER_UI_URL: https://cdn.jsdelivr.net/npm/swagger-ui-dist/
 # MONGO CONFIG
 MONGO_STR_DEV: mongodb://tal:tal@0.0.0.0:27017 # Docker in local 
 MONGO_STR: mongodb://tal:tal@mongodb:27017 # Docker container in docker compose
-#MONGO_DB_NAME: database_MLP_16_16_16_3ST_SC1_ON
 MONGO_DB_NAME: database_test
 MONGO_BAND_STATUS_COLLECTION_NAME: band_status
 MONGO_BOX_TRAFFIC_COLLECTION_NAME: box_traffic

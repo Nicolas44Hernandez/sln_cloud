@@ -150,8 +150,6 @@ INFERENCE_INPUT_SAMPLES = [
         "box_rx_pps" : 5,
         "box_tx_pps" : 5,
         "downlinkMCS" : 5,
-        "uplinkMCS" : 5,
-        "uplinkShortGuard" : 5,        
         "tx_Mbps" : 5,
         "rx_Mbps" : 5,
         "rx_pps" : 5,
