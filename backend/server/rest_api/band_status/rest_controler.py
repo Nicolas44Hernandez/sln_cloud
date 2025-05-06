@@ -8,7 +8,7 @@ from .rest_model import BandStatusSchema
 
 logger = logging.getLogger(__name__)
 
-bp = Blueprint("band_status", __name__, url_prefix="/api-sln/band_status")
+bp = Blueprint("band_status", __name__, url_prefix="/api/band_status")
 """ The api blueprint. Should be registered in app main api object """
 
 

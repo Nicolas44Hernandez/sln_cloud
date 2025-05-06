@@ -8,7 +8,7 @@ from .rest_model import BoxTrafficSchema, StationTrafficSchema
 
 logger = logging.getLogger(__name__)
 
-bp = Blueprint("traffic", __name__, url_prefix="/api-sln/traffic")
+bp = Blueprint("traffic", __name__, url_prefix="/api/traffic")
 """ The api blueprint. Should be registered in app main api object """
 
 

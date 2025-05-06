@@ -8,7 +8,7 @@ from .rest_model import BoxCountersSchema, StationCountersSchema
 
 logger = logging.getLogger(__name__)
 
-bp = Blueprint("counters", __name__, url_prefix="/api-sln/counters")
+bp = Blueprint("counters", __name__, url_prefix="/api/counters")
 """ The api blueprint. Should be registered in app main api object """
 
 

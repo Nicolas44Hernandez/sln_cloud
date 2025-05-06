@@ -10,33 +10,33 @@ handlers:
     class: logging.StreamHandler
     formatter: default
 
-  app:
-    class: logging.handlers.RotatingFileHandler
-    formatter: default
-    filename: logs/app.log
-    maxBytes: 52428800 # 50 Megabytes
-    backupCount: 1
+  # app:
+  #   class: logging.handlers.RotatingFileHandler
+  #   formatter: default
+  #   filename: logs/app.log
+  #   maxBytes: 52428800 # 50 Megabytes
+  #   backupCount: 1
 
-  api_rest:
-    class: logging.handlers.RotatingFileHandler
-    formatter: default
-    filename: logs/api-rest.log
-    maxBytes: 52428800 # 50 Megabytes
-    backupCount: 1
+  # api_rest:
+  #   class: logging.handlers.RotatingFileHandler
+  #   formatter: default
+  #   filename: logs/api-rest.log
+  #   maxBytes: 52428800 # 50 Megabytes
+  #   backupCount: 1
 
-  mongo:
-    class: logging.handlers.RotatingFileHandler
-    formatter: default
-    filename: logs/mongo.log
-    maxBytes: 52428800 # 50 Megabytes
-    backupCount: 1
+  # mongo:
+  #   class: logging.handlers.RotatingFileHandler
+  #   formatter: default
+  #   filename: logs/mongo.log
+  #   maxBytes: 52428800 # 50 Megabytes
+  #   backupCount: 1
   
-  rtd:
-    class: logging.handlers.RotatingFileHandler
-    formatter: default
-    filename: logs/rtd.log
-    maxBytes: 52428800 # 50 Megabytes
-    backupCount: 1
+  # rtd:
+  #   class: logging.handlers.RotatingFileHandler
+  #   formatter: default
+  #   filename: logs/rtd.log
+  #   maxBytes: 52428800 # 50 Megabytes
+  #   backupCount: 1
 
 root:
   level: WARN
@@ -45,25 +45,25 @@ root:
 loggers:
   server.app:
     level: INFO
-    handlers: [app]
+    handlers: [console]
     propagate: no
 
   server.rest_api:
       level: INFO
-      handlers: [api_rest]
+      handlers: [console]
       propagate: no
 
   werkzeug:
       level: INFO
-      handlers: [api_rest]
+      handlers: [console]
       propagate: no
 
   server.managers.mongo_db_manager:
     level: INFO
-    handlers: [mongo]
+    handlers: [console]
     propagate: no
   
   server.managers.rtd_manager:
     level: INFO
-    handlers: [rtd]
+    handlers: [console]
     propagate: no
