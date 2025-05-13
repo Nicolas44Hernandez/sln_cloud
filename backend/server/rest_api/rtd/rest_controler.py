@@ -8,7 +8,7 @@ from .rest_model import RtdSchema
 
 logger = logging.getLogger(__name__)
 
-bp = Blueprint("rtd", __name__, url_prefix="/api-sln/rtd")
+bp = Blueprint("rtd", __name__, url_prefix="/api/rtd")
 """ The api blueprint. Should be registered in app main api object """
 
 

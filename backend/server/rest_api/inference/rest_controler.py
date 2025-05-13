@@ -8,7 +8,7 @@ from .rest_model import InferenceSchema
 
 logger = logging.getLogger(__name__)
 
-bp = Blueprint("inferences", __name__, url_prefix="/api-sln/inference")
+bp = Blueprint("inferences", __name__, url_prefix="/api/inference")
 """ The api blueprint. Should be registered in app main api object """
 
 

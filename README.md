@@ -98,16 +98,6 @@ docker compose -f docker-compose-ressources.yml up -d
 docker compose -f docker-compose-application.yml up -d
 ```
 
-3. Create and seed database
-```bash
-docker exec -it sln-backend sh -c "python db_manage.py create"
-```
-
-To Delete database
-```bash
-docker exec -it sln-backend sh -c "python db_manage.py delete"
-```
-
 # Access webserver 
 The web server can be accessed from:
 ```http://<rpi_ip_address:80>```

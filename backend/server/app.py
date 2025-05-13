@@ -15,6 +15,7 @@ from .rest_api.counters import bp as box_counters_manager_controler_bp
 from .rest_api.inference import bp as inference_manager_controler_bp
 from .rest_api.timestamps import bp as timestamps_manager_controler_bp
 from .rest_api.rtd import bp as rtd_manager_controler_bp
+from .rest_api.database import bp as database_manager_controler_bp
 from .extension import api
 from .common import ServerException, handle_server_exception
 
@@ -85,8 +86,7 @@ def register_extensions(app: Flask):
     mongo_db_manager_service.init_app(app=app)
 
     # RTD manager service
-    if getenv("APP_MODE") == "RUN":
-        rtd_manager_service.init_app(app=app)
+    rtd_manager_service.init_app(app=app)
     
 
 def register_blueprints(app: Flask):
@@ -100,3 +100,4 @@ def register_blueprints(app: Flask):
     api.register_blueprint(inference_manager_controler_bp)  
     api.register_blueprint(timestamps_manager_controler_bp)
     api.register_blueprint(rtd_manager_controler_bp)
+    api.register_blueprint(database_manager_controler_bp)

@@ -11,6 +11,13 @@ import StationsRtdChart from './StationsRtdChart.vue'
 </script>
 <template>  
 <div class="charts-container">
+  <div class="toggle-container">
+    SLN 
+    <div class="toggle-switch" :class="{ 'active': serviceRunning }" @click="toggleService">
+      <div class="toggle-thumb" :class="{ 'active': serviceRunning }"></div>
+    </div>
+  
+  </div>
   <div class="box-counters-container">
     <BoxCountersChart :counters_2GHz="box_counters_2GHz" :counters_5GHz="box_counters_5GHz" :timestamps="timestamps"/>
   </div>
@@ -26,11 +33,15 @@ import StationsRtdChart from './StationsRtdChart.vue'
   <div class="inferences-results-container">
     <InferenceResultsChart :inferences="inferences" :stations_colors="stations_colors" :timestamps="timestamps" />
   </div>
-  <div class="rtd-container">
+  <!-- <div class="rtd-container">
     <StationsRtdChart :stations_rtd="stations_rtd" :stations_colors="stations_colors" :timestamps="timestamps" />
-  </div>
+  </div> -->
   <div class="band-status-container">
     <BandStatusChart :band_status="band_status" :timestamps="timestamps" />
+  </div>
+  <div class="button-container">
+    <button @click="confirmDataBaseDelete" class="restart-database-button">Restart Database</button>
+    <button @click="confirmDataBaseExport" class="export-database-button">Export Database</button>
   </div>
 </div>
 
@@ -54,6 +65,7 @@ export default {
       stations_counters: {},
       inferences: {},
       stations_colors: [],
+      serviceRunning: false,
     };
   },
   mounted() {
@@ -72,14 +84,15 @@ export default {
       this.getStationsTraffic();
       this.getBoxCounters();
       this.geStationsCounters();
-      this.getStationsRtd();
+      //this.getStationsRtd();
+      this.getServiceStatus();
       
       this.getTimestamps();
     },
     getBoxTraffic() {
       // Geting box traffic list of points from backend
-      const url ='http://localhost:3000/api-sln/traffic/box'
-      //const url ='/api-eip/traffic/box'
+      //const url ='http://localhost:3000/api/traffic/box'
+      const url ='/api/traffic/box'
       axios.get(url)
         .then(response => {
           let new_box_2GHz_array = [];
@@ -112,8 +125,8 @@ export default {
     },
     getStationsTraffic() {
       // Geting stations traffic list of points from backend
-      const url ='http://localhost:3000/api-sln/traffic/stations'
-      //const url ='/api-eip/traffic/stations'
+      //const url ='http://localhost:3000/api/traffic/stations'
+      const url ='/api/traffic/stations'
       axios.get(url)
         .then(response => {
           let new_stations_traffic_dict = {};
@@ -159,12 +172,11 @@ export default {
     },
     getBandStatusList() {
       // Geting band status list of points from backend
-      const url ='http://localhost:3000/api-sln/band_status'
-      //const url ='/api-eip/band_status'
+      //const url ='http://localhost:3000/api/band_status'
+      const url ='/api/band_status'
       axios.get(url)
         .then(response => {
           let new_band_status_array = [];
-
           response.data.forEach((point) => {
             new_band_status_array.push(point);            
           });
@@ -182,8 +194,8 @@ export default {
     },
     getBoxCounters() {
       // Geting box traffic list of points from backend
-      const url ='http://localhost:3000/api-sln/counters/box'
-      //const url ='/api-eip/counters/box'
+      //const url ='http://localhost:3000/api/counters/box'
+      const url ='/api/counters/box'
       axios.get(url)
         .then(response => {
           let new_box_counters_2GHz_array = [];
@@ -218,8 +230,8 @@ export default {
     }, 
     geStationsCounters() {
       // Geting stations counters list of points from backend
-      const url ='http://localhost:3000/api-sln/counters/stations'
-      //const url ='/api-eip/counters/stations'
+      //const url ='http://localhost:3000/api/counters/stations'
+      const url ='/api/counters/stations'
       axios.get(url)
         .then(response => {
           let new_stations_counters_dict = {};
@@ -277,8 +289,8 @@ export default {
     },
     getInferences() {
       // Geting inferences list of points from backend
-      const url ='http://localhost:3000/api-sln/inference'
-      //const url ='/api-eip/inference'
+      //const url ='http://localhost:3000/api/inference'
+      const url ='/api/inference'
       axios.get(url)
         .then(response => {
           let new_inferences_dict = {};
@@ -319,16 +331,24 @@ export default {
           console.log(error);  
         });
     },
+    getServiceStatus() {
+      // Geting inferences list of points from backend
+      const url ='http://192.168.102.1:8000/api/wifi/sln/status'
+      axios.get(url)
+        .then(response => {
+          this.serviceRunning = response.data.status;
+        })
+        .catch(error => {
+          console.log(error);  
+        });
+    },
     getStationsRtd() {
       // Geting stations traffic list of points from backend
-      const url ='http://localhost:3000/api-sln/rtd'
-      //const url ='/api-eip/traffic/rtd'
+      //const url ='http://localhost:3000/api/rtd'
+      const url ='/api/traffic/rtd'
       axios.get(url)
         .then(response => {
           let new_stations_rtd_dict = {};
-        
-          console.log("When retreiving stations RTD");
-
           response.data.forEach((sample) => {
             const newSample = {
                 "timestamp": sample.timestamp,
@@ -365,8 +385,8 @@ export default {
     },
     getTimestamps() {
       // Geting timestamps list from backend
-      const url ='http://localhost:3000/api-sln/timestamps'
-      //const url ='/api-eip/timestamps'
+      //const url ='http://localhost:3000/api/timestamps'
+      const url ='/api/timestamps'
       axios.get(url)
         .then(response => {
           const new_timestamps_list = response.data.timestamps;
@@ -406,6 +426,63 @@ export default {
       }
       return arr1.slice().sort().toString() === arr2.slice().sort().toString();
     }, 
+    confirmDataBaseDelete() {
+      const userConfirmed = confirm("Are you sure you want to restart database?");
+      if (userConfirmed) {
+        this.restartDatabase(); 
+      } else {
+        console.log("Database restart canceled.");
+      }
+    },
+    async restartDatabase() {
+      // Geting timestamps list from backend
+      //const url ='http://localhost:3000/api/database/reset'
+      const url ='/api/database/reset'
+
+      axios.post(url)
+        .then(response => {
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          console.log('Error in database restart:', response.data);
+          console.log(error);  
+        });
+    },
+    confirmDataBaseExport(){
+      const userInput = prompt("Please type database export file:");
+      this.exportDatabase(userInput);       
+    },
+    async exportDatabase(file_name) {
+      console.log('Exporting database to :', file_name);
+      // Geting timestamps list from backend
+      //const url =`http://localhost:3000/api/database/export/${file_name}`
+      const url =`/api/database/export/${file_name}` 
+
+      axios.get(url, { responseType: 'blob' })
+        .then(response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `${file_name}.zip` );
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          console.log('Database exported');
+        })
+        .catch(error => {
+          console.log('Error in database export:', error.response.data);
+          console.log(error); 
+        });
+    },
+    toggleService() {
+      this.serviceRunning = !this.serviceRunning;
+      const url =`http://192.168.102.1:8000/api/wifi/sln/status?new_status=${this.serviceRunning}`
+      axios.post(url)
+        .catch(error => {
+          console.log('Error in service status toggle:', response.data);
+          console.log(error);  
+        });
+    },
   }
 }
 </script>
@@ -433,5 +510,56 @@ h2{
 .band-status-container {
     margin-top: 15px; 
 }
+.button-container {
+  margin: 30px; 
+  text-align: center;
+}
+.restart-database-button {
+  background-color: red; 
+  color: rgb(0, 0, 0); 
+  padding: 10px 20px; 
+  cursor: pointer; 
+  font-size: 14px;
+  margin: 5px;
+}
+.export-database-button {
+  background-color: rgb(31, 26, 92); 
+  color: rgb(252, 252, 252); 
+  padding: 10px 20px; 
+  cursor: pointer; 
+  font-size: 14px;
+  margin: 5px;
+}
+.toggle-container {
+  margin: 30px; 
+  text-align: center;
+}
+.toggle-switch {
+  width: 60px; /* Width of the toggle switch */
+  height: 30px; /* Height of the toggle switch */
+  background-color: red; /* Background color when off */
+  border-radius: 15px; /* Rounded corners */
+  position: relative; /* Positioning for the thumb */
+  cursor: pointer; /* Change cursor on hover */
+  display: inline-block; /* Inline block for alignment */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+.toggle-switch.active {
+  background-color: green; /* Background color when on */
+}
+.toggle-thumb {
+  width: 28px; /* Width of the toggle thumb */
+  height: 28px; /* Height of the toggle thumb */
+  background-color: white; /* Thumb color */
+  border-radius: 50%; /* Circular thumb */
+  position: absolute; /* Positioning */
+  top: 1px; /* Center the thumb vertically */
+  left: 1px; /* Position the thumb on the left */
+  transition: transform 0.3s; /* Smooth transition for movement */
+}
+.toggle-thumb.active {
+  transform: translateX(30px); /* Move thumb to the right when active */
+}
+
  
 </style>

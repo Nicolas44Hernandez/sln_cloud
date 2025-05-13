@@ -8,68 +8,33 @@ from random import random
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
 
-DEVELOPMENT = os.getenv("DB_ENV") == "DEVELOPMENT"
-if DEVELOPMENT:
-    NB_OF_SAMPLES = 40
-else:
-    NB_OF_SAMPLES = 1
-if DEVELOPMENT:
-    TIMESTAMPS = [datetime.now() + timedelta(seconds=(i*5)) for i in range(NB_OF_SAMPLES)]
-else:
-    TIMESTAMPS = [datetime.now() + timedelta(hours=1, seconds=(i*1)) for i in range(NB_OF_SAMPLES)]
+NB_OF_SAMPLES = 40
+TIMESTAMPS = [datetime.now() + timedelta(seconds=(i*5)) for i in range(NB_OF_SAMPLES)]
 
-if DEVELOPMENT:
-    BAND_STATUS_SAMPLES = [
-        {"timestamp": TIMESTAMPS[n],"status": random() > 0.5}
-        for n in range(NB_OF_SAMPLES)
-    ]
-else:
-    BAND_STATUS_SAMPLES = [
-        {"timestamp": TIMESTAMPS[n],"status": False}
-        for n in range(NB_OF_SAMPLES)
-    ]
+BAND_STATUS_SAMPLES = [
+    {"timestamp": TIMESTAMPS[n],"status": random() > 0.5}
+    for n in range(NB_OF_SAMPLES)
+]
 
-if DEVELOPMENT:
-    BOX_TRAFFIC_SAMPLES = [
-        {
-            "timestamp": TIMESTAMPS[int(n/2)],
-            "band": "5GHz" if n%2 == 0 else "2.4GHz",
-            "rx_Mbps": random()*10,
-            "tx_Mbps": random()*10,
-        }
-        for n in range(NB_OF_SAMPLES*2)
-    ]
-else:
-    BOX_TRAFFIC_SAMPLES = [
-        {
-            "timestamp": TIMESTAMPS[int(n/2)],
-            "band": "5GHz" if n%2 == 0 else "2.4GHz",
-            "rx_Mbps": 0,
-            "tx_Mbps": 0,
-        }
-        for n in range(NB_OF_SAMPLES*2)
-    ]
+BOX_TRAFFIC_SAMPLES = [
+    {
+        "timestamp": TIMESTAMPS[int(n/2)],
+        "band": "5GHz" if n%2 == 0 else "2.4GHz",
+        "rx_Mbps": random()*10,
+        "tx_Mbps": random()*10,
+    }
+    for n in range(NB_OF_SAMPLES*2)
+]
 
-if DEVELOPMENT:
-    STATIONS_TRAFFIC_SAMPLES = [
-        {
-            "timestamp": TIMESTAMPS[n],
-            "station": "6E:F0:60:14:53:B9" if random() < 0.5 else "66:55:44:33:22:11",
-            "rx_Mbps": random()*10,
-            "tx_Mbps": random()*10,
-        }
-        for n in range(NB_OF_SAMPLES)
-    ]
-else:
-    STATIONS_TRAFFIC_SAMPLES = [
-        {
-            "timestamp": TIMESTAMPS[n],
-            "station": "6E:F0:60:14:53:B9",
-            "rx_Mbps": 0,
-            "tx_Mbps": 0,
-        }
-        for n in range(NB_OF_SAMPLES)
-    ]
+STATIONS_TRAFFIC_SAMPLES = [
+    {
+        "timestamp": TIMESTAMPS[n],
+        "station": "6E:F0:60:14:53:B9" if random() < 0.5 else "66:55:44:33:22:11",
+        "rx_Mbps": random()*10,
+        "tx_Mbps": random()*10,
+    }
+    for n in range(NB_OF_SAMPLES)
+]
 
 BOX_COUNTERS_SAMPLES = [
     {
@@ -93,52 +58,29 @@ BOX_COUNTERS_SAMPLES = [
     }
     for n in range(NB_OF_SAMPLES)
 ]
-if DEVELOPMENT:
-    STATIONS_COUNTERS_SAMPLES = [
-        {   
-            "station": "AA:BB:CC:DD:EE:FF" if random() < 0.5 else "11:22:33:44:55:66",
-            "txBytes": 10,
-            "rxBytes": 10,
-            "uplinkMCS": 10,
-            "lastDataUplinkRate": 10,
-            "lastDataDownlinkRate": 10,
-            "signalStrength": 10,
-            "avgSignalStrengthByChain": 10,
-            "uplinkShortGuard": 10,
-            "downlinkMCS": 10,
-            "inactive": 10,
-            "signalNoiseRatio": 10,
-            "rxPacketCount": 10,
-            "txPacketCount": 10,
-            "txErrors": 10,
-            "band": "2.4GHz" if random() < 0.5 else "5GHz",
-            "timestamp": TIMESTAMPS[n],  
-        }
-        for n in range(NB_OF_SAMPLES)
-    ]
-else:
-    STATIONS_COUNTERS_SAMPLES = [
-        {   
-            "station": "6E:F0:60:14:53:B9",
-            "txBytes": 0,
-            "rxBytes": 0,
-            "uplinkMCS": 0,
-            "lastDataUplinkRate": 0,
-            "lastDataDownlinkRate": 0,
-            "signalStrength": 0,
-            "avgSignalStrengthByChain": 0,
-            "uplinkShortGuard": 0,
-            "downlinkMCS": 0,
-            "inactive": 0,
-            "signalNoiseRatio": 0,
-            "rxPacketCount": 0,
-            "txPacketCount": 0,
-            "txErrors": 0,
-            "band": "2.4GHz" if random() < 0.5 else "5GHz",
-            "timestamp": TIMESTAMPS[n],  
-        }
-        for n in range(NB_OF_SAMPLES)
-    ]
+
+STATIONS_COUNTERS_SAMPLES = [
+    {   
+        "station": "AA:BB:CC:DD:EE:FF" if random() < 0.5 else "11:22:33:44:55:66",
+        "txBytes": 10,
+        "rxBytes": 10,
+        "uplinkMCS": 10,
+        "lastDataUplinkRate": 10,
+        "lastDataDownlinkRate": 10,
+        "signalStrength": 10,
+        "avgSignalStrengthByChain": 10,
+        "uplinkShortGuard": 10,
+        "downlinkMCS": 10,
+        "inactive": 10,
+        "signalNoiseRatio": 10,
+        "rxPacketCount": 10,
+        "txPacketCount": 10,
+        "txErrors": 10,
+        "band": "2.4GHz" if random() < 0.5 else "5GHz",
+        "timestamp": TIMESTAMPS[n],  
+    }
+    for n in range(NB_OF_SAMPLES)
+]
 
 INFERENCE_INPUT_SAMPLES = [
     {
@@ -159,63 +101,32 @@ INFERENCE_INPUT_SAMPLES = [
     for counter in STATIONS_COUNTERS_SAMPLES
 ]
 
-if DEVELOPMENT:
-    INFERENCE_RESULTS_SAMPLES = [
-    {
-        "status": random() < 0.5,
-        "probability": random(),
-    }
-    for counter in STATIONS_COUNTERS_SAMPLES
-]
-else:
-    INFERENCE_RESULTS_SAMPLES = [
-    {
-        "status": False,
-        "probability": 0,
-    }
-    for counter in STATIONS_COUNTERS_SAMPLES
+INFERENCE_RESULTS_SAMPLES = [
+{
+    "status": random() < 0.5,
+    "probability": random(),
+}
+for counter in STATIONS_COUNTERS_SAMPLES
 ]
 
+INFERENCES_SAMPLES = [
+    {
+        "station": "AA:BB:CC:DD:EE:FF" if random() < 0.5 else "11:22:33:44:55:66",
+        "input": input,
+        "result": result,
+        "timestamp": TIMESTAMPS[n],
+    }
+    for n, (input, result) in enumerate(zip(INFERENCE_INPUT_SAMPLES, INFERENCE_RESULTS_SAMPLES))
+]
 
-if DEVELOPMENT:
-    INFERENCES_SAMPLES = [
-        {
-            "station": "AA:BB:CC:DD:EE:FF" if random() < 0.5 else "11:22:33:44:55:66",
-            "input": input,
-            "result": result,
-            "timestamp": TIMESTAMPS[n],
-        }
-        for n, (input, result) in enumerate(zip(INFERENCE_INPUT_SAMPLES, INFERENCE_RESULTS_SAMPLES))
-    ]
-else:
-    INFERENCES_SAMPLES = [
-        {
-            "station": "6E:F0:60:14:53:B9",
-            "input": input,
-            "result": result,
-            "timestamp": TIMESTAMPS[n],
-        }
-        for n, (input, result) in enumerate(zip(INFERENCE_INPUT_SAMPLES, INFERENCE_RESULTS_SAMPLES))
-    ]
-
-if DEVELOPMENT:
-    STATIONS_RTD_SAMPLES = [
-        {
-            "timestamp": TIMESTAMPS[n],
-            "station": "6E:F0:60:14:53:B9" if random() < 0.5 else "66:55:44:33:22:11",
-            "rtd": random()*10,
-        }
-        for n in range(NB_OF_SAMPLES)
-    ]
-else:
-    STATIONS_RTD_SAMPLES = [
-        {
-            "timestamp": TIMESTAMPS[n],
-            "station": "6E:F0:60:14:53:B9",
-            "rtd": 0,
-        }
-        for n in range(NB_OF_SAMPLES)
-    ]
+STATIONS_RTD_SAMPLES = [
+    {
+        "timestamp": TIMESTAMPS[n],
+        "station": "6E:F0:60:14:53:B9" if random() < 0.5 else "66:55:44:33:22:11",
+        "rtd": random()*10,
+    }
+    for n in range(NB_OF_SAMPLES)
+]
 
 
 @cli.command('create')

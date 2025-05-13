@@ -2,8 +2,8 @@ version: "3.7"
 
 services: 
   mongodb:
-    #image: mongodb-raspberrypi4-unofficial-r7.0.4
-    image: mongo:6-jammy # USED TO TEST
+    image: mongodb-raspberrypi4-unofficial-r7.0.4
+    #image: mongo:6-jammy # USED TO TEST
     container_name: mongo
     restart: always
     environment:
@@ -12,10 +12,10 @@ services:
       - MONGO_INITDB_DATABASE=clients
     networks: 
       - sln-network
-    # expose:
-    #   - '27017'
-    ports: # USED TO TEST
-      - "27017:27017"
+    expose:
+      - '27017'
+    # ports: # USED TO TEST
+    #   - "27017:27017"
     volumes:
       - type: volume
         source: MONGO_DATA

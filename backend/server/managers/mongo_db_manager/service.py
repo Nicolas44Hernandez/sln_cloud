@@ -43,10 +43,7 @@ class MongoDbManager:
             else:                
                 self.mongodb_str=app.config["MONGO_STR_DEV"]   
 
-            if "TEST_NAME" in os.environ: 
-                self.db_name=os.getenv("TEST_NAME")
-            else:
-                self.db_name=app.config["MONGO_DB_NAME"]
+            self.db_name=app.config["MONGO_DB_NAME"]
             self.band_status_collection_name=app.config["MONGO_BAND_STATUS_COLLECTION_NAME"]
             self.box_traffic_collection_name=app.config["MONGO_BOX_TRAFFIC_COLLECTION_NAME"]
             self.stations_traffic_collection_name=app.config["MONGO_STATIONS_TRAFFIC_COLLECTION_NAME"]
@@ -85,7 +82,7 @@ class MongoDbManager:
                 self.box_counters_collection_name,
                 self.stations_counters_collection_name,
                 self.inferences_collection_name,
-                self.stations_rtd_collection_name,
+                #self.stations_rtd_collection_name,
             ]
             if not all(item in db_collumns for item in expected_cols):
                 raise ServerException(ErrorCode.MONGO_ERROR)

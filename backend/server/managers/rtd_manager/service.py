@@ -15,6 +15,7 @@ class RtdManager:
 
     stations : List[str]
     rtd_period: float
+    service_active: float
 
     def __init__(self, app: Flask = None) -> None:
         if app is not None:
@@ -26,8 +27,10 @@ class RtdManager:
             logger.info("initializing the MRTD manager")
             self.stations = app.config["RTD_STATIONS"]
             self.rtd_period = app.config["RTD_PERIOD_IN_SECS"]
+            self.service_active = app.config["RTD_SERVICE_RUNNING"]
 
-            self.run_service_in_dedicated_thread()
+            if self.service_active:
+                self.run_service_in_dedicated_thread()
 
     def ping_station(self, station_ip: str, station_mac: str, timestamp: datetime, nb_pings: int=10):
         """Ping a single station and log the response time in milliseconds"""

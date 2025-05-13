@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Create DB (DEVELOPMENT)",
+            "name": "Create DB",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/backend/db_manage.py",
@@ -13,27 +13,11 @@
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
                 "DB_ENV": "DEVELOPMENT",
-                "APP_MODE": "SETUP",
             },
             "args": [
                 "create"
             ]
         },        
-        {
-            "name": "Create DB (PRODUCTION)",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/backend/db_manage.py",
-            "console": "integratedTerminal",
-            "env": {
-                "FLASK_ENV": "DEVELOPMENT",
-                "DB_ENV": "PRODUCTION",
-                "APP_MODE": "SETUP",
-            },
-            "args": [
-                "create"
-            ]
-        },
         {
             "name": "Delete DB",
             "type": "debugpy",
@@ -43,7 +27,6 @@
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
                 "DB_ENV": "DEVELOPMENT",
-                "APP_MODE": "SETUP",
             },
             "args": [
                 "delete"
@@ -57,7 +40,6 @@
             "console": "integratedTerminal",
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
-                "APP_MODE": "SETUP",
             },
             "args": [
                 "export",
@@ -72,11 +54,10 @@
             "console": "integratedTerminal",
             "env": {
                 "FLASK_ENV": "DEVELOPMENT",
-                "APP_MODE": "SETUP",
             },
             "args": [
                 "import",
-                "database-Notraffic-SignalStrength-5GHz-Galaxy",
+                "database-Notraffic-SignalStrength-5GHz",
             ]
         },
         {
@@ -87,7 +68,6 @@
             "env": {
                 "FLASK_APP": "backend/server/app:create_app()",
                 "FLASK_ENV": "DEVELOPMENT",
-                "APP_MODE": "RUN",
             },
             "args": [
                 "run",
@@ -98,24 +78,5 @@
                 "--no-reload",
             ]
         },
-        {
-            "name": "Run backend in dev: VISUALIZE",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-                "FLASK_APP": "backend/server/app:create_app()",
-                "FLASK_ENV": "DEVELOPMENT",
-                "APP_MODE": "VISUALIZE",
-            },
-            "args": [
-                "run",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                "3000",
-                "--no-reload",
-            ]
-        }
     ]
 }
